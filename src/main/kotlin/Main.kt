@@ -23,20 +23,41 @@ fun main() {
     table(list1, list2, list3, list4, header = true)
 
     println("VI. Table with 5 columns, header, total, align = middle:")
-    val l0 = mutableListOf(1,2,3,4,5,6,7,8)
-    val l0new = mutableListOf<String>()
-    for (num in l0) l0new.add(num.toString())
-    val l1 = mutableListOf("Product", "Chocolate", "Gummibarchen", "Scottish Longbreads", "Sir Rodney's Scones", "Tarte au sucre", "Chocolate Biscuits", "Total")
+    val l0 = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8)
+    val l1 = mutableListOf(
+        "Product",
+        "Chocolate",
+        "Gummibarchen",
+        "Scottish Longbreads",
+        "Sir Rodney's Scones",
+        "Tarte au sucre",
+        "Chocolate Biscuits",
+        "Total"
+    )
     val l2 = mutableListOf(744.60, 5079.60, 1267.50, 1418.00, 4728.00, 943.89, 14181.59)
-    val l2new = mutableListOf("Qtr 1")
-    for (num in l2) l2new.add(num.toString())
     val l3 = mutableListOf(162.56, 1249.20, 1062.50, 756.00, 4547.92, 349.60, 8127.78)
-    val l3new = mutableListOf("Qtr 2")
-    for (num in l3) l3new.add(num.toString())
     val l4 = mutableListOf(907.16, 6328.80, 2330.00, 2174.00, 9275.92, 1293.49, 22309.37)
-    val l4new = mutableListOf("Grand Total")
-    for (num in l4) l4new.add(num.toString())
-    table(l0new, l1, l2new, l3new, l4new, header = true, total = true, align = "middle")
+    table(
+        l0.toStringList(),
+        l1,
+        l2.toStringList("Qtr 1"),
+        l3.toStringList("Qtr 2"),
+        l4.toStringList("Grand Total"),
+        header = true,
+        total = true,
+        align = "middle"
+    )
+}
+
+/*
+* Returns a mutable list of type String.
+* Pass a string as an argument, to add it to the beginning of the new list.
+* Leave the parentheses empty to leave the list as is.
+*/
+fun <T> MutableList<T>.toStringList(header: String = "none"): MutableList<String> {
+    val newList = if (header == "none") mutableListOf() else mutableListOf(header)
+    for (t in this) newList.add(t.toString())
+    return newList
 }
 
 /*
@@ -61,7 +82,7 @@ fun List<String>.frame(align: String = "left") {
     for (string in this) if (longestWord.length < string.length) longestWord = string
     val border = makeBorder(longestWord)
     println(border)
-    for (string in this)  {
+    for (string in this) {
         print("| ")
         string.printCell(longestWord, align)
         println(" |")
@@ -70,7 +91,7 @@ fun List<String>.frame(align: String = "left") {
 }
 
 /*
-* Turns the list into a single column table with a header.
+* Turns the list into a single column table with a header and prints it out.
 * By default, the text in the table is aligned left.
 * To center the text, set `align` to `middle`.
 * To align the text right, set `align` to `right`.
@@ -99,14 +120,17 @@ fun List<String>.table(header: String, align: String = "left") {
 * To center the text, set `align` to `middle`.
 * To align the text right, set `align` to `right`.
 */
-fun table( vararg columns: MutableList<String>,
-           header: Boolean = false,
-           total: Boolean = false,
-           align: String = "left") {
+fun table(
+    vararg columns: MutableList<String>,
+    header: Boolean = false,
+    total: Boolean = false,
+    align: String = "left"
+) {
     var numOfRows = 0
     val longestWords = mutableListOf<String>()
     for (column in columns) {
-        if (numOfRows < column.size) numOfRows = column.size // the number of rows in the table is the size of the longest list
+        if (numOfRows < column.size) numOfRows =
+            column.size // the number of rows in the table is the size of the longest list
         var temp = ""
         for (row in column) if (temp.length < row.length) temp = row // find the widest word in the list
         longestWords.add(temp)
@@ -117,9 +141,9 @@ fun table( vararg columns: MutableList<String>,
         border += makeBorder(longestWord)
         border = border.dropLast(1)
     }
-    border  += '+'
+    border += '+'
     println(border)
-    for (i in 0..<numOfRows){
+    for (i in 0..<numOfRows) {
         print("| ")
         for (j in columns.indices) {
             columns[j][i].printCell(longestWords[j], align)
@@ -155,13 +179,15 @@ fun String.printCell(longestWord: String, align: String) {
             for (i in 1..emptySpace) print(' ')
             print(this)
         }
+
         "middle", "centre", "center" -> {
-            val right = emptySpace/2
-            val left = ceil(emptySpace/2.0).toInt()
+            val right = emptySpace / 2
+            val left = ceil(emptySpace / 2.0).toInt()
             for (i in 1..right) print(' ')
             print(this)
             for (i in 1..left) print(' ')
         }
+
         else -> {
             print(this)
             for (i in 1..emptySpace) print(' ')
