@@ -76,7 +76,7 @@ list.table("Groceries", "middle")
 
 ![A single column table with a header, centered text](/readme_img/table_groceries.png)
 
-### A 3-column table without a header, aligned left
+### A 3-column table with a header, aligned left
 
 ```
 val list1 = mutableListOf("fruits", "oranges", "apples", "strawberries", "grapes")
@@ -85,7 +85,7 @@ val list3 = mutableListOf("dairy", "butter", "cheese")
 table(list1, list2, list3)
 ```
 
-![A 3-column table without a header, aligned left](/readme_img/table_fruits.png)
+![A 3-column table with a header, aligned left](/readme_img/table_fruits.png)
 
 ### A 5-column table with a header and a total row, centered text
 
