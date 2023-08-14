@@ -31,6 +31,8 @@ fun List<String>.table(header: String, align: String = "left")
 
 Joins any number of lists into a table and prints out the results.
 If `header` is set to `true`, the 1st string of every list becomes a header.
+If `total` is set to `true`, the last string of every list becomes a part of a total line.
+If `border` is set to `false`, the table cell borders become transparent.
 By default, the text is aligned left.
 To center the text or align it right, set `align` to `"middle"` or `"right"` respectively.
 
@@ -39,6 +41,7 @@ fun table(
     vararg columns: MutableList<String>,
     header: Boolean = false,
     total: Boolean = false,
+    border: Boolean = true,
     align: String = "left"
 )
 ```

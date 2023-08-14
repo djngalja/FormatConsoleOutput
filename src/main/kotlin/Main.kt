@@ -5,11 +5,11 @@ fun main() {
     val text = "Making my way downtown"
     text.frame()
 
-    println("II. Border around List<String>, align = right:")
+    println("II. Border around List<String>, right-aligned:")
     val list = listOf("eggs", "bread", "oranges", "tea", "watermelon")
     list.frame("right")
 
-    println("III. Single column table with header, align = middle:")
+    println("III. Single column table with header, centered text:")
     list.table("Groceries", "middle")
 
     println("IV. Table with 3 columns:")
@@ -22,7 +22,7 @@ fun main() {
     val list4 = mutableListOf("snacks", "popcorn", "nuts")
     table(list1, list2, list3, list4, header = true)
 
-    println("VI. Table with 5 columns, header, total, align = middle:")
+    println("VI. Table with 5 columns, header, total, centered text:")
     val l0 = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8)
     val l1 = mutableListOf(
         "Product",
@@ -46,6 +46,16 @@ fun main() {
         header = true,
         total = true,
         align = "middle"
+    )
+    println("VII. Table with 5 columns and header, without border:")
+    table(
+        l0.toStringList(),
+        l1,
+        l2.toStringList("Qtr 1"),
+        l3.toStringList("Qtr 2"),
+        l4.toStringList("Grand Total"),
+        header = true,
+        border = false
     )
 }
 
@@ -116,6 +126,8 @@ fun List<String>.table(header: String, align: String = "left") {
 /*
 * Joins any number of lists into a table and prints out the results.
 * If `header` is set to `true`, the 1st string of every list becomes a header.
+* If `total` is set to `true`, the last string of every list becomes a part of a total line.
+* If `border` is set to `false`, the table cell borders become transparent.
 * By default, the text in the table is aligned left.
 * To center the text, set `align` to `middle`.
 * To align the text right, set `align` to `right`.
@@ -124,6 +136,7 @@ fun table(
     vararg columns: MutableList<String>,
     header: Boolean = false,
     total: Boolean = false,
+    border: Boolean = true,
     align: String = "left"
 ) {
     var numOfRows = 0
@@ -132,31 +145,35 @@ fun table(
         if (numOfRows < column.size) numOfRows =
             column.size // the number of rows in the table is the size of the longest list
         var temp = ""
-        for (row in column) if (temp.length < row.length) temp = row // find the widest word in the list
+        for (row in column) if (temp.length < row.length) temp = row // find the widest (=longest) word in the list
         longestWords.add(temp)
     }
     for (column in columns) while (column.size < numOfRows) column.add("") //all lists should have the same size
-    var border = ""
-    for (longestWord in longestWords) {
-        border += makeBorder(longestWord)
-        border = border.dropLast(1)
+    var line = ""
+    if (border) {
+        for (longestWord in longestWords) {
+            line += makeBorder(longestWord)
+            line = line.dropLast(1)
+        }
+        line += '+'
     }
-    border += '+'
-    println(border)
+    println(line)
     for (i in 0..<numOfRows) {
-        print("| ")
+        if (border) print("| ")
+        else print(" ")
         for (j in columns.indices) {
             columns[j][i].printCell(longestWords[j], align)
-            print(" | ")
+            if (border) print(" | ")
+            else print("  ")
         }
         println()
-        if (header && i == 0) println(border)
+        if (header && i == 0) println(line)
         if (total && (i == numOfRows - 2)) {
-            val ttlBorder = border.replace('=', '-')
-            println(ttlBorder)
+            val ttlLine = line.replace('=', '-')
+            println(ttlLine)
         }
     }
-    println(border)
+    println(line)
 }
 
 /*
