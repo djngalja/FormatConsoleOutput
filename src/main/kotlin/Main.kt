@@ -1,5 +1,7 @@
 import kotlin.math.ceil
 
+enum class Align { RIGHT, MIDDLE, LEFT }
+
 fun main() {
     println("I. Border around String:")
     val text = "Making my way downtown"
@@ -7,10 +9,10 @@ fun main() {
 
     println("II. Border around List<String>, right-aligned:")
     val list = listOf("eggs", "bread", "oranges", "tea", "watermelon")
-    list.frame("right")
+    list.frame(Align.RIGHT)
 
     println("III. Single column table with header, centered text:")
-    list.table("Groceries", "middle")
+    list.table("Groceries", Align.MIDDLE)
 
     println("IV. Table with 3 columns:")
     val list1 = mutableListOf("fruits", "oranges", "apples", "strawberries", "grapes")
@@ -45,7 +47,7 @@ fun main() {
         l4.toStringList("Grand Total"),
         header = true,
         total = true,
-        align = "middle"
+        align = Align.MIDDLE
     )
     println("VII. Table with 5 columns and header, without border:")
     table(
@@ -87,7 +89,7 @@ fun String.frame() {
 * To center the text, set `align` to `middle`.
 * To align the text right, set `align` to `right`.
 * */
-fun List<String>.frame(align: String = "left") {
+fun List<String>.frame(align: Align = Align.LEFT) {
     var longestWord = this[0]
     for (string in this) if (longestWord.length < string.length) longestWord = string
     val border = makeBorder(longestWord)
@@ -106,7 +108,7 @@ fun List<String>.frame(align: String = "left") {
 * To center the text, set `align` to `middle`.
 * To align the text right, set `align` to `right`.
 */
-fun List<String>.table(header: String, align: String = "left") {
+fun List<String>.table(header: String, align: Align = Align.LEFT) {
     var longestWord = header
     for (string in this) if (longestWord.length < string.length) longestWord = string
     val border = makeBorder(longestWord)
@@ -137,7 +139,7 @@ fun table(
     header: Boolean = false,
     total: Boolean = false,
     border: Boolean = true,
-    align: String = "left"
+    align: Align = Align.LEFT
 ) {
     var numOfRows = 0
     val longestWords = mutableListOf<String>()
@@ -189,15 +191,15 @@ fun makeBorder(longestWord: String, char: Char = '='): String {
 /*
 * Prints out a cell of a table or a frame.
 */
-fun String.printCell(longestWord: String, align: String) {
+fun String.printCell(longestWord: String, align: Align) {
     val emptySpace = longestWord.length - this.length
     when (align) {
-        "right" -> {
+        Align.RIGHT -> {
             for (i in 1..emptySpace) print(' ')
             print(this)
         }
 
-        "middle", "centre", "center" -> {
+        Align.MIDDLE -> {
             val right = emptySpace / 2
             val left = ceil(emptySpace / 2.0).toInt()
             for (i in 1..right) print(' ')

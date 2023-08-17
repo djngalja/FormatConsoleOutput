@@ -13,20 +13,20 @@ fun String.frame()
 ```
 
 Prints out the list with a border around it. By default, the text is aligned left.
-To center the text or align it right, set `align` to `"middle"` or `"right"` respectively.
+To center the text or align it right, set `align` to `Align.MIDDLE` or `Align.RIGHT` respectively.
 
 ```
-fun List<String>.frame(align: String = "left")
+fun List<String>.frame(align: Align = Align.LEFT)
 ```
 
 <p style="font-size:22px; "> table </p>
 
 Turns the list into a single column table with a header and prints it out.
 By default, the text is aligned left.
-To center the text or align it right, set `align` to `"middle"` or `"right"` respectively.
+To center the text or align it right, set `align` to `Align.MIDDLE` or `Align.RIGHT` respectively.
 
 ```
-fun List<String>.table(header: String, align: String = "left")
+fun List<String>.table(header: String, align: Align = Align.LEFT)
 ```
 
 Joins any number of lists into a table and prints out the results.
@@ -34,7 +34,7 @@ If `header` is set to `true`, the 1st string of every list becomes a header.
 If `total` is set to `true`, the last string of every list becomes a part of a total line.
 If `border` is set to `false`, the table cell borders become transparent.
 By default, the text is aligned left.
-To center the text or align it right, set `align` to `"middle"` or `"right"` respectively.
+To center the text or align it right, set `align` to `Align.MIDDLE` or `Align.RIGHT` respectively.
 
 ```
 fun table(
@@ -42,7 +42,7 @@ fun table(
     header: Boolean = false,
     total: Boolean = false,
     border: Boolean = true,
-    align: String = "left"
+    align: Align = Align.LEFT
 )
 ```
 
@@ -112,7 +112,7 @@ table(
     l4.toStringList("Grand Total"),
     header = true,
     total = true,
-    align = "middle"
+    align = Align.MIDDLE
 )
 ```
 
